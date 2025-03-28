@@ -10,8 +10,9 @@ interface IFormInput {
 
 const RegisterPage = () => {
  
-  const { register, handleSubmit } = useForm<IFormInput>()
+  const { register, handleSubmit,formState:{errors} } = useForm<IFormInput>()
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
+  console.log(errors)
 
   // Renders
 
@@ -21,9 +22,10 @@ const RegisterPage = () => {
         Register to get access!
       </h2>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <Input placeholder="username"  {...register("username")} />
-        <Input placeholder="email"  {...register("email")}/> 
-        <Input placeholder="password"  {...register("password")}/> 
+        <Input placeholder="username"  {...register("username",{required:"username is requird"})} />
+        <p>{errors?.username?.message}</p>
+        <Input placeholder="email"  {...register("email",{required:"email is requird"})}/> 
+        <Input placeholder="password"  {...register("password",{required:"password is requird"})}/> 
 
       
         <Button fullWidth >
@@ -32,7 +34,7 @@ const RegisterPage = () => {
         </Button>
       </form>
     </div>
-  );
+  ); 
 };
 
 export default RegisterPage;
