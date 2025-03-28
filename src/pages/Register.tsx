@@ -13,7 +13,7 @@ const RegisterPage = () => {
       <form>
       
         <Button fullWidth >
-          Register jjj
+          Register n
           
         </Button>
       </form>
