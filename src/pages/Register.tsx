@@ -2,6 +2,10 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { useForm, SubmitHandler } from "react-hook-form"
 import InputErrorMessage from "../components/ui/InputErrorMessage";
+import Axiosinstance from "../confing/instance.confing";
+import toast from "react-hot-toast";
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 
 interface IFormInput {
   username: string,
@@ -10,11 +14,38 @@ interface IFormInput {
 }
 
 const RegisterPage = () => {
+  
+  const [isloading,setLoading]=useState(false);
  
   const { register, handleSubmit,formState:{errors} } = useForm<IFormInput>()
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
-  console.log(errors)
-
+  const onSubmit: SubmitHandler<IFormInput> = async(data) => {console.log(data);
+    setLoading(true);
+  console.log(errors);
+  try {
+    const {status}=await Axiosinstance.post("/auth/local/register",data);
+    if(status==200)
+    {
+      toast.success('تم التسجيل بنجاح 🎉',{
+        position:"bottom-center",
+        duration:4000,
+        style:{
+          backgroundColor:"black",
+          color:"white",
+          width:"fit-content",
+        }
+        
+      });
+      
+    }
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+  finally{
+    setLoading(false);
+  }
+}
   // Renders
 
   return (
@@ -49,7 +80,7 @@ const RegisterPage = () => {
 
       
         <Button fullWidth >
-          Register n
+         {isloading ? "loading...." : "Register" }
           
         </Button>
       </form>
